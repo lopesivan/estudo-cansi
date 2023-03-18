@@ -1,7 +1,7 @@
 # Makefile: A standard Makefile for main.c
 
-CFLAGS = `pkg-config --cflags libavutil libavformat libswscale`
-LDLIBS = `pkg-config --libs libavutil libavformat libswscale`
+CFLAGS = `pkg-config --cflags libavutil libavformat libswscale libavcodec`
+LDLIBS = `pkg-config --libs libavutil libavformat libswscale libavcodec`
 
 all  : main
 clean:
