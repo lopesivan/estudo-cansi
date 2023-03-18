@@ -12,9 +12,9 @@ int main (int argc, char *argv[])
     curl = curl_easy_init();
     if (curl)
     {
-        FILE *fp = fopen ("filename.txt", "wb");
+        FILE *fp = fopen ("main.pdf", "wb");
 
-        curl_easy_setopt (curl, CURLOPT_URL, "https://example.com/file.txt");
+        curl_easy_setopt (curl, CURLOPT_URL, "http://192.168.2.43:8899/main.pdf");
         curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt (curl, CURLOPT_WRITEDATA, fp);
 
