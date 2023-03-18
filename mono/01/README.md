@@ -1,0 +1,1 @@
+O XPath é uma linguagem de consulta usada para extrair informações de documentos XML. Para usar o XPath em um programa em C, é necessário incluir a biblioteca libxml/xpath.h. Aqui está um exemplo de código que usa o XPath para extrair informações de um documento XML:
