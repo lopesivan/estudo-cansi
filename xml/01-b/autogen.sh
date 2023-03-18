@@ -1,6 +1,6 @@
 #!/bin/sh
 
-autoreconf -i
+autoreconf -i && ./configure && make
 
 exit 0
 
