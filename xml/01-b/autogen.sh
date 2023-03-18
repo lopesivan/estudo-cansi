@@ -1,9 +1,6 @@
 #!/bin/sh
 
-aclocal
-automake --add-missing --force-missing --copy --foreign
-autoreconf
+autoreconf -i
 
 exit 0
-
 

@@ -1,0 +1,15 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-I/usr/include/libxml2",
+      "-o",
+      "main",
+      "main.c"
+    ],
+    "directory": "/workspace/estudo-cansi/xml/02",
+    "file": "/workspace/estudo-cansi/xml/02/main.c",
+    "output": "/workspace/estudo-cansi/xml/02/main"
+  }
+]
