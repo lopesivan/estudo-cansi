@@ -14,8 +14,8 @@ int main() {
 
   xmlFreeNode(child1);
   xmlFreeNode(child2);
-  xmlFreeNode(root);
-  xmlFreeDoc(doc);
+  /* xmlFreeNode(root); */
+  /* xmlFreeDoc(doc); */
 
   return 0;
 }

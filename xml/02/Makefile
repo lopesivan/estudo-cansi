@@ -5,5 +5,5 @@ LDLIBS = -lxml2
 
 all  : main
 clean:
-	/bin/rm -rf main main.o 
+	/bin/rm -rf main main.o exemplo.xml 
 # END OF FILE
