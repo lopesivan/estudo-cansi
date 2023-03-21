@@ -36,6 +36,14 @@ AM_CONDITIONAL(CONFIG_MONO, [
   test ! \( -z "$MCS" -o \
             -z "$MONO"   \)])
 
+# Criando comando
+AC_CONFIG_COMMANDS([abc],
+                   [echo \
+"esse comando é rodado no final do ./configure, e a variável definida dentro
+dele é $mypkgname, é bom lembrar que os comandos são separados por ;(ponto e
+vírgula)."; echo "chamando outro comando shell"; pwd],
+                 [mypkgname=$PACKAGE_NAME])
+
 AC_CONFIG_FILES([
     Makefile
     src/Makefile
