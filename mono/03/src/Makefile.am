@@ -13,7 +13,7 @@ AM_LDFLAGS = -shared
 if CONFIG_MONO
 include mono.mk
 
-CLEANFILES = $(OUT)
+CLEANFILES = program.exe
 endif
 
 # Instalação
