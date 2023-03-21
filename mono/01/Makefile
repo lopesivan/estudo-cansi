@@ -17,5 +17,5 @@ run: program.exe libsum.so
 	mono program.exe
 
 clean:
-	/bin/rm -rf libsum.so libsum.o program.exe
+	/bin/rm -rf libsum.so sum.o program.exe
 # END OF FILE
