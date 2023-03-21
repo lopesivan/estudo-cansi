@@ -1,3 +1,4 @@
+all: run
 
 program.exe: program.cs
 	mcs program.cs
