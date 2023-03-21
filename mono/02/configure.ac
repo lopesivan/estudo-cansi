@@ -24,6 +24,18 @@ AM_PROG_AR
 
 LT_INIT([dlopen])
 
+# Verifico se o programa existe no PATH, se existe carrego a variável de
+# mesmo nome mas em maiúscula com o nome do programa
+
+AC_PATH_PROG(MCS, mcs, "")
+AC_PATH_PROG(MONO, mono, "")
+
+# se as variáveia abaixo não forem vazias eu crio a variável
+# `CONFIG_MONO' do Makefile.am.
+AM_CONDITIONAL(CONFIG_MONO, [
+  test ! \( -z "$MCS" -o \
+            -z "$MONO"   \)])
+
 AC_CONFIG_FILES([
     Makefile
     src/Makefile

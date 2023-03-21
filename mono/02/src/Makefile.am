@@ -10,5 +10,9 @@ libsum_la_SOURCES = \
 AM_CFLAGS = -Wall -Wextra
 AM_LDFLAGS = -shared
 
+if CONFIG_MONO
+include mono.mk
+endif
+
 # Instalação
 #include_HEADERS = sumrary.h
