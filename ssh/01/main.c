@@ -41,7 +41,7 @@ int main() {
     char* your_remote_server_ip ="192.168.2.43";
     char* your_remote_username = "ivan";
     int your_remote_server_port = 22;
-    char* your_remote_password = "carioca90";
+    char* your_remote_password = "XXXXXX";
 
     ssh_session session;
     int rc;
