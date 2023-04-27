@@ -1,6 +1,6 @@
 # Makefile: A standard Makefile for main.c
 
-LDLIBS = -lssh
+LDLIBS = -lssh2
 
 all  : main
 clean:
