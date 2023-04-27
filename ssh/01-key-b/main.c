@@ -44,7 +44,7 @@ int main() {
 
     ssh_options_set(session, SSH_OPTIONS_HOST, "dev");
     ssh_options_set(session, SSH_OPTIONS_USER, "ivan");
-    ssh_options_parse_config(session, "config.d/dev");
+    ssh_options_parse_config(session, "/home/ivan/.ssh/config.d/dev");
 
     int rc = ssh_connect(session);
     if (rc != SSH_OK) {
@@ -53,16 +53,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    ssh_key key;
-    if (ssh_pki_import_privkey_file("/home/ivan/.ssh/id_rsa_dev", NULL, NULL, NULL, &key) != SSH_OK) {
-        fprintf(stderr, "Error loading private key: %s\n", ssh_get_error(session));
-        ssh_free(session);
-        exit(EXIT_FAILURE);
-    }
-
-    rc = ssh_userauth_publickey(session, NULL, key);
-    ssh_key_free(key);
-
+    rc = ssh_userauth_publickey_auto(session, NULL, NULL);
     if (rc != SSH_AUTH_SUCCESS) {
         fprintf(stderr, "Error authenticating with public key: %s\n", ssh_get_error(session));
         ssh_disconnect(session);
