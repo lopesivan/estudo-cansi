@@ -6,7 +6,12 @@
 
 int main (void)
 {
-    const char* dirs[] = {"a", "a/b", "a/b/c", "a/d", "a/d/e"};
+    const char* dirs[] = {
+        "a", 
+        "a/b", 
+        "a/b/c", 
+        "a/d", 
+        "a/d/e"};
     const char* file1 = "a/b/c/file1.txt";
     const char* file2 = "a/d/e/file2.txt";
     const char* mylink = "../../b/c/file1.txt";
