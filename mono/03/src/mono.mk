@@ -1,7 +1,7 @@
 all: run
 
 program.exe: program.cs
-	mcs program.cs
+	$(MCS) program.cs
 
 run: program.exe ./.libs/libsum.so
-	mono program.exe
+	$(MONO) program.exe
