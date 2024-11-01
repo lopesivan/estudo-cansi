@@ -1,19 +1,17 @@
 # Makefile: A standard Makefile for main.c
+dir := my_dir
 
 all  : main
 
 clean:
 	/bin/rm -rf main main.o
-	test -d a && rm -rf a
 
-test: create_dir run
+set_test:
+	bash ./set_test.sh $(dir)
 
-create_dir:
-	mkdir -p a/bb/ccc/ddddd/eeeee/uuuu/zzzz
-	eval \>a/bb/ccc/ddddd/eeeee/uuuu/zzzz/a{1..3}.txt\;
-	eval \>a/bb/ccc/ddddd/eeeee/b{1..6}.txt\;
+test: set_test run
 
 run:
-	./main  ./a
+	./main ./$(dir)
 
 # END OF FILE
