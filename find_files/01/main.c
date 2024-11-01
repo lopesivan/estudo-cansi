@@ -19,13 +19,17 @@ void buscar_arquivos_txt(const char* diretorio)
         return;
     }
 
+    int i = 0; // DEBUG:
     // Percorrendo o conteúdo do diretório
     while ((entrada = readdir(dir)) != NULL)
     {
+        i++;                      // DEBUG:
+        printf("DEBUG: %d\n", i); // DEBUG
         char caminho[1024];
         snprintf(caminho, sizeof(caminho), "%s/%s", diretorio,
                  entrada->d_name);
 
+        printf("Arquivo encontrado: %s\n", caminho);
         // Ignorando "." e ".."
         if (strcmp(entrada->d_name, ".") == 0 ||
             strcmp(entrada->d_name, "..") == 0)
