@@ -1,0 +1,32 @@
+-- programa em lua
+local program_name = "main"
+local args = "my_dir"
+
+return {
+	tasks = {
+
+		clean = {
+			command = function()
+				require("yabs"):run_task("make clean")
+			end,
+			condition = require("yabs.conditions").file_exists("Makefile"),
+			output = "quickfix",
+			type = "lua",
+		},
+
+		bear = {
+			command = function()
+				require("yabs").languages.make:run_task("bear")
+			end,
+			condition = require("yabs.conditions").file_exists("Makefile"),
+			output = "quickfix",
+			type = "lua",
+		},
+
+		valgrind = {
+			command = string.format("valgrind ./%s %s", program_name, args),
+			condition = require("yabs.conditions").file_exists("CMakeLists.txt"),
+			output = "quickfix",
+		},
+	},
+}
