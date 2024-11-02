@@ -19,17 +19,22 @@ void buscar_arquivos_txt(const char* diretorio)
         return;
     }
 
-    int i = 0; // DEBUG:
+    int i = 0; // DEBUG: Esta linha pode ser removida.
+
     // Percorrendo o conteúdo do diretório
     while ((entrada = readdir(dir)) != NULL)
     {
-        i++;                      // DEBUG:
-        printf("DEBUG: %d\n", i); // DEBUG
+        i++; // DEBUG: Esta linha pode ser removida.
+
+        printf("DEBUG: %d\n", i); // DEBUG: Esta linha pode ser removida.
+
         char caminho[1024];
         snprintf(caminho, sizeof(caminho), "%s/%s", diretorio,
                  entrada->d_name);
 
-        printf("Arquivo encontrado: %s\n", caminho);
+        printf("Arquivo encontrado: %s\n",
+               caminho); // DEBUG: Esta linha pode ser removida.
+
         // Ignorando "." e ".."
         if (strcmp(entrada->d_name, ".") == 0 ||
             strcmp(entrada->d_name, "..") == 0)
