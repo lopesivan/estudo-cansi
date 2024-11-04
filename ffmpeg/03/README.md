@@ -2,3 +2,9 @@ Para gravar 10 segundos de vídeo utilizando a biblioteca FFmpeg em C, podemos u
 
 
 ./main ./video.mp4 output.mp4
+
+
+av_register_all() é necessária, embora pareça estar obsoleta
+desde o ffmpeg 4.0.
+
+
