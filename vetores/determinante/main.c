@@ -1,29 +1,34 @@
 #include <stdio.h>
 /**/
-/* Para calcular o determinante de uma matriz de ordem n x n, você pode implementar o algoritmo de eliminação de Gauss para reduzir a matriz a uma forma triangular superior e, em seguida, calcular o determinante como o produto dos elementos na diagonal principal. Segue um exemplo de função em C que calcula o determinante de uma matriz quadrada de ordem n x n utilizando o algoritmo de eliminação de Gauss : */
+/* Para calcular o determinante de uma matriz de ordem n x n, você pode
+ * implementar o algoritmo de eliminação de Gauss para reduzir a matriz a uma
+ * forma triangular superior e, em seguida, calcular o determinante como o
+ * produto dos elementos na diagonal principal. Segue um exemplo de função em
+ * C que calcula o determinante de uma matriz quadrada de ordem n x n
+ * utilizando o algoritmo de eliminação de Gauss : */
 /**/
 
-float
-determinant (float mat[][10], int n);
+float determinant(float mat[][10], int n);
 
 int main()
 {
     int n = 4;
-    float mat[][10] = {{1, 2, 3, 4},
-        {5, 6, 7, 8},
-        {9, 10, 11, 12},
-        {13, 14, 15, 16}
+    float mat[][10] = {
+        // clang-format off
+        {2,  3,  1,  5},
+        {4,  1,  3,  2},
+        {7,  0,  2,  6},
+        {1,  5,  4,  3} // clang-format on
     };
 
-    float det = determinant (mat, n);
+    float det = determinant(mat, n);
 
-    printf ("O determinante da matriz é: %.2f\n", det);
+    printf("O determinante da matriz é: %.2f\n", det);
 
     return 0;
 }
 
-float
-determinant (float mat[][10], int n)
+float determinant(float mat[][10], int n)
 {
     float det = 1;
     int i, j, k;
@@ -70,4 +75,3 @@ determinant (float mat[][10], int n)
 
     return det;
 }
-
