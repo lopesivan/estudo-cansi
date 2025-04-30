@@ -14,6 +14,10 @@ MAKE_CMD = ALGOWC_TOPDIR=$(GIT_ROOT) $(MAKE) -f $(MAKEFILE)
 all:
 	$(MAKE_CMD)
 
+# Target para rodar programa
+run:
+	$(MAKE_CMD) run
+
 # Target para limpeza dos arquivos gerados
 clean:
 	$(MAKE_CMD) clean
