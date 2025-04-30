@@ -18,7 +18,9 @@ void print_lista(const List *lista)
 int main(void)
 {
     List frames;
-    list_init(&frames, free); /* Cada item é um ponteiro para int */
+
+    /* Cada item é um ponteiro para int */
+    list_init(&frames, free);
 
     /* Inicializar com 5 quadros disponíveis (0 a 4) */
     int i = 0;
