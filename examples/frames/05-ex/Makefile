@@ -25,3 +25,5 @@ free:
 # Target para limpeza dos arquivos gerados
 clean:
 	$(MAKE_CMD) clean
+	rm frame_*.ppm
+
