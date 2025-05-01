@@ -127,7 +127,7 @@ run: $(EXE)
 	./$(EXE) $(VIDEO)
 
 free: $(EXE)
-	valgrind ./$(EXE)
+	valgrind --leak-check=full ./$(EXE) $(VIDEO)
 
 frames:
 	$(FFPROBE) $(FFPROBE_OPT) $(VIDEO)
