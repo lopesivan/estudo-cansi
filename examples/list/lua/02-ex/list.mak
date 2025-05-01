@@ -82,9 +82,8 @@ EXE    = list.so
 
 CC     = gcc
 LL     = gcc
-CFLAGS = -Wall
-LFLAGS = -fPIC -shared
-
+CFLAGS = -Wall -fPIC
+LFLAGS = -shared
 # ****************************************************************************
 # *                                                                          *
 # *  Define the rules.                                                       *
