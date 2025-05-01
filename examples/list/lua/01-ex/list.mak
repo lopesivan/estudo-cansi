@@ -1,7 +1,7 @@
 # ****************************************************************************
 # *                                                                          *
-# *  frames.mak                                                                *
-# *  ==========                                                                *
+# *  list.mak                                                                *
+# *  ========                                                                *
 # *                                                                          *
 # ****************************************************************************
 
@@ -11,20 +11,18 @@
 # *                                                                          *
 # ****************************************************************************
 
-MAKNAM = frames.mak
+MAKNAM = list.mak
 
 # ****************************************************************************
 # *                                                                          *
-# *  lib FFMPEG                                                              *
+# *  Define the Lua library directories in which to search for library files.*
 # *                                                                          *
 # ****************************************************************************
 
-PKG_CONFIG_PATH:=/usr/lib/x86_64-linux-gnu/pkgconfig
-export PKG_CONFIG_PATH
-
-FFMPEG_LIBS   = libavformat libavcodec libavutil libswscale
-FFMPEG_CFLAGS = $(shell /usr/bin/pkg-config --cflags $(FFMPEG_LIBS))
-FFMPEG_LDLIBS = $(shell /usr/bin/pkg-config --libs $(FFMPEG_LIBS))
+LUA_ROOT        = $(shell brew --prefix)
+LUA_EXEC_PREFIX = $(LUA_ROOT)/opt/lua
+LUA_LIBDIR      = $(LUA_EXEC_PREFIX)/lib
+LUA_INCLUDEDIR  = $(LUA_EXEC_PREFIX)/include/lua
 
 # ****************************************************************************
 # *                                                                          *
@@ -32,7 +30,7 @@ FFMPEG_LDLIBS = $(shell /usr/bin/pkg-config --libs $(FFMPEG_LIBS))
 # *                                                                          *
 # ****************************************************************************
 
-LIBDRS =
+LIBDRS = -L$(LUA_LIBDIR) -llua -lm -ldl
 
 # ****************************************************************************
 # *                                                                          *
@@ -40,7 +38,7 @@ LIBDRS =
 # *                                                                          *
 # ****************************************************************************
 
-INCDRS = -I$(ALGOWC_TOPDIR)/include
+INCDRS = -I$(ALGOWC_TOPDIR)/include -I$(LUA_INCLUDEDIR)
 
 # ****************************************************************************
 # *                                                                          *
@@ -56,23 +54,8 @@ LIBFLS =
 # *                                                                          *
 # ****************************************************************************
 
-SRCFLS = video_frames.c\
-         $(ALGOWC_TOPDIR)/source/list.c \
-         $(ALGOWC_TOPDIR)/source/frames.c
-
-# ****************************************************************************
-# *                                                                          *
-# *  Video que será processado.                                              *
-# *                                                                          *
-# ****************************************************************************
-
-VIDEO = ./arquivo.mp4
-FFPROBE = ffprobe
-FFPROBE_OPT = -v error \
-			  -count_frames \
-			  -select_streams v:0 \
-			  -show_entries stream=nb_frames \
-			  -of default=nw=1:nk=1
+SRCFLS = list_lua.c\
+         $(ALGOWC_TOPDIR)/source/list.c
 
 # ****************************************************************************
 # *                                                                          *
@@ -80,9 +63,8 @@ FFPROBE_OPT = -v error \
 # *                                                                          *
 # ****************************************************************************
 
-OBJFLS = video_frames.o\
-         $(ALGOWC_TOPDIR)/source/list.o \
-         $(ALGOWC_TOPDIR)/source/frames.o
+OBJFLS = list_lua.o\
+         $(ALGOWC_TOPDIR)/source/list.o
 
 # ****************************************************************************
 # *                                                                          *
@@ -90,7 +72,7 @@ OBJFLS = video_frames.o\
 # *                                                                          *
 # ****************************************************************************
 
-EXE    = video_frames.exe
+EXE    = list.so
 
 # ****************************************************************************
 # *                                                                          *
@@ -100,8 +82,8 @@ EXE    = video_frames.exe
 
 CC     = gcc
 LL     = gcc
-CFLAGS = $(FFMPEG_CFLAGS)
-LFLAGS = $(FFMPEG_LDLIBS)
+CFLAGS = -Wall
+LFLAGS = -fPIC -shared
 
 # ****************************************************************************
 # *                                                                          *
@@ -110,7 +92,7 @@ LFLAGS = $(FFMPEG_LDLIBS)
 # ****************************************************************************
 
 $(EXE): $(OBJFLS)
-	$(LL) -o $@ $(OBJFLS) $(LIBDRS) $(LIBFLS) $(LFLAGS)
+	$(LL) $(LFLAGS) -o $@ $(OBJFLS) $(LIBDRS) $(LIBFLS)
 
 .c.o:
 	$(CC) $(CFLAGS) -o $@ -c $(INCDRS) $<
@@ -123,14 +105,11 @@ depend:
 	makedepend $(INCDRS) -f $(MAKNAM) $(SRCFLS)
 	make -f $(MAKNAM) $(EXE)
 
-run: $(EXE)
-	./$(EXE) $(VIDEO)
+test:
+	LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(LUA_LIBDIR) ldd list.so
 
-free: $(EXE)
-	valgrind --leak-check=full ./$(EXE) $(VIDEO)
-
-frames:
-	$(FFPROBE) $(FFPROBE_OPT) $(VIDEO)
+run:
+	LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(LUA_LIBDIR) lua list_test.lua
 
 clean:
 	-rm $(EXE)
