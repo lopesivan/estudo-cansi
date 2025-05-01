@@ -172,11 +172,16 @@ int main(int argc, char *argv[])
     /* Liberação geral de recursos */
     list_destroy(&imagens_em_memoria);
     list_destroy(&frame_pool);
+
+    /* Libera contexto de conversão */
+    /* sws_freeContext(sws_ctx); */
+
     av_free(buffer);
     av_frame_free(&pFrame);
     av_frame_free(&pFrameRGB);
     avcodec_free_context(&pCodecCtx);
     avformat_close_input(&pFormatCtx);
 
+    sws_freeContext(sws_ctx); /* <--- adicione aqui */
     return 0;
 }
