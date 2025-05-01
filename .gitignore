@@ -58,4 +58,6 @@ dkms.conf
 # my
 .cache
 compile_commands.json
+*.ppm
+
 # End of https://www.toptal.com/developers/gitignore/api/c
