@@ -78,6 +78,31 @@ void desenhar_faixa(ImagemRGB *img, int y_inicial, int altura, int r, int g,
     }
 }
 
+/* Inverte as cores de toda a imagem (efeito negativo): */
+void inverter_cores(ImagemRGB *img)
+{
+    int total_pixels = img->largura * img->altura;
+    for (int i = 0; i < total_pixels * 3; i++)
+    {
+        img->dados[i] = 255 - img->dados[i];
+    }
+}
+
+/* reduz o brilho da imagem */
+void escurecer_imagem(ImagemRGB *img, float fator)
+{
+    if (fator < 0.0f)
+        fator = 0.0f;
+    if (fator > 1.0f)
+        fator = 1.0f;
+
+    int total_pixels = img->largura * img->altura;
+    for (int i = 0; i < total_pixels * 3; i++)
+    {
+        img->dados[i] = (uint8_t)(img->dados[i] * fator);
+    }
+}
+
 /* Função principal do programa */
 int main(int argc, char *argv[])
 {
@@ -235,6 +260,10 @@ int main(int argc, char *argv[])
 
             i = i + 2 * j;
         }
+
+        inverter_cores(img); // inverte cores
+
+        escurecer_imagem(img, 0.5f); // escurece para 50%
 
         salvar_imagem_em_arquivo(img); /* Salva imagem .ppm */
         free(img->dados);              /* Libera dados RGB */
