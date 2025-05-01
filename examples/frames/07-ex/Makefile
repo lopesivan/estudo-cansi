@@ -29,5 +29,5 @@ frames:
 # Target para limpeza dos arquivos gerados
 clean:
 	$(MAKE_CMD) clean
-	rm frame_*.ppm
+	rm imagem*.ppm
 
