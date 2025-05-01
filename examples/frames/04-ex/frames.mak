@@ -43,9 +43,17 @@ LIBFLS =
 # *                                                                          *
 # ****************************************************************************
 
-SRCFLS = main.c\
+SRCFLS = video_frames.c\
          $(ALGOWC_TOPDIR)/source/list.c \
          $(ALGOWC_TOPDIR)/source/frames.c
+
+# ****************************************************************************
+# *                                                                          *
+# *  Video que será processado.                                              *
+# *                                                                          *
+# ****************************************************************************
+
+VIDEO = ./arquivo.mp4
 
 # ****************************************************************************
 # *                                                                          *
@@ -53,7 +61,7 @@ SRCFLS = main.c\
 # *                                                                          *
 # ****************************************************************************
 
-OBJFLS = main.o\
+OBJFLS = video_frames.o\
          $(ALGOWC_TOPDIR)/source/list.o \
          $(ALGOWC_TOPDIR)/source/frames.o
 
@@ -63,7 +71,20 @@ OBJFLS = main.o\
 # *                                                                          *
 # ****************************************************************************
 
-EXE    = main.exe
+EXE    = video_frames.exe
+
+# ****************************************************************************
+# *                                                                          *
+# *  lib FFMPEG                                                              *
+# *                                                                          *
+# ****************************************************************************
+
+PKG_CONFIG_PATH:=/usr/lib/x86_64-linux-gnu/pkgconfig
+export PKG_CONFIG_PATH
+
+FFMPEG_LIBS   = libavformat libavcodec libavutil libswscale
+FFMPEG_CFLAGS = $(shell /usr/bin/pkg-config --cflags $(FFMPEG_LIBS))
+FFMPEG_LDLIBS = $(shell /usr/bin/pkg-config --libs $(FFMPEG_LIBS))
 
 # ****************************************************************************
 # *                                                                          *
@@ -71,10 +92,10 @@ EXE    = main.exe
 # *                                                                          *
 # ****************************************************************************
 
-CC     = c89
-LL     = c89
-CFLAGS =
-LFLAGS =
+CC     = gcc
+LL     = gcc
+CFLAGS = $(FFMPEG_CFLAGS)
+LFLAGS = $(FFMPEG_LDLIBS)
 
 # ****************************************************************************
 # *                                                                          *
@@ -83,7 +104,7 @@ LFLAGS =
 # ****************************************************************************
 
 $(EXE): $(OBJFLS)
-	$(LL) $(LFLAGS) -o $@ $(OBJFLS) $(LIBDRS) $(LIBFLS)
+	$(LL) -o $@ $(OBJFLS) $(LIBDRS) $(LIBFLS) $(LFLAGS)
 
 .c.o:
 	$(CC) $(CFLAGS) -o $@ -c $(INCDRS) $<
@@ -97,7 +118,7 @@ depend:
 	make -f $(MAKNAM) $(EXE)
 
 run: $(EXE)
-	./$(EXE)
+	./$(EXE) $(VIDEO)
 
 free: $(EXE)
 	valgrind ./$(EXE)
