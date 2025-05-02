@@ -94,21 +94,23 @@ void alteracao_cor(ImagemRGB *img)
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      */
 
+    int x0 = 250;
+    int y0 = 30;
+
     int w = img->largura;
     int linesize = w * 3;
+
+    int xf = linesize - x0;
     int yf = img->altura;
 
-    int total_pixels = linesize * yf;
+    int xp = xf;
+    int yp = yf;
 
-    int x0 = 50;
-    int y0 = 50;
-    int xp = 344;
-    int yp = 400;
+    int total_pixels = linesize * yf;
 
     printf("(xp, yp) = (%d, %d)\n", xp, yp);
     uint8_t *p = NULL;
 
-    /* p = (&img->dados[0] + (xf * yf) / w); */
     p = (&img->dados[0] + x0 + (linesize * y0));
 
     for (int i = y0; i < yp; i++)
@@ -118,15 +120,6 @@ void alteracao_cor(ImagemRGB *img)
 
         p = p + linesize;
     }
-
-    /* for (int i = x0; i < yp; i++) */
-    /* { */
-    /*     p = p + (linesize * i); */
-    /*     for (int j = x0; j < xp; j++) */
-    /*         *(p + j) = 255;
-
-    /*     /* p = (&img->dados[0] + x0 + (linesize * y0) * i); */
-    /* } */
 }
 
 /* Função principal do programa */
@@ -181,6 +174,8 @@ int main(int argc, char *argv[])
         av_image_get_buffer_size(AV_PIX_FMT_RGB24, largura, altura, 1);
     uint8_t *buffer =
         (uint8_t *)av_malloc(numBytes); /* Aloca buffer para imagem RGB */
+
+    printf("imagem: (%d, %d)\n", largura, altura);
 
     /* Associa o buffer à estrutura pFrameRGB */
     av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer,
