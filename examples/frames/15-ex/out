@@ -1,0 +1,30 @@
+ALGOWC_TOPDIR=/workspace/estudo-cansi make -f frames.mak run
+make[1]: Entrando no diretório '/workspace/estudo-cansi/examples/frames/15-ex'
+./video_frames.exe ./arquivo.mp4
+frame: 0
+load[0] (478, 850)
+frame: 43
+load[1] (478, 850)
+frame: 86
+load[2] (478, 850)
+frame: 129
+load[3] (478, 850)
+frame: 172
+load[4] (478, 850)
+--------------------------
+memory id[4] (478, 850)
+pintando pixel da imagem_004.ppm
+imagem_004.ppm
+memory id[3] (478, 850)
+pintando pixel da imagem_003.ppm
+imagem_003.ppm
+memory id[2] (478, 850)
+pintando pixel da imagem_002.ppm
+imagem_002.ppm
+memory id[1] (478, 850)
+pintando pixel da imagem_001.ppm
+imagem_001.ppm
+memory id[0] (478, 850)
+pintando pixel da imagem_000.ppm
+imagem_000.ppm
+make[1]: Saindo do diretório '/workspace/estudo-cansi/examples/frames/15-ex'
