@@ -72,7 +72,7 @@ void alteracao_cor(ImagemRGB *img)
      %
      %           0    50      344   478                  x
      %      +    +----.-------.-----+- - - - - --------->
-     %      |    |    .........     |
+     %  y0  | 30.|    .........     |
      %      |    |    .........     |
      %  500 +    |    ........[p]   |    (xp, yp)
      %      |    |                  |
@@ -95,26 +95,38 @@ void alteracao_cor(ImagemRGB *img)
      */
 
     int w = img->largura;
-    int xf = w * 3;
+    int linesize = w * 3;
     int yf = img->altura;
 
-    int total_pixels = xf * yf;
+    int total_pixels = linesize * yf;
 
     int x0 = 50;
+    int y0 = 50;
     int xp = 344;
-    int yp = 500;
+    int yp = 400;
 
     printf("(xp, yp) = (%d, %d)\n", xp, yp);
     uint8_t *p = NULL;
 
-    p = (&img->dados[0]);
-    for (int i = x0; i < yp; i++)
+    /* p = (&img->dados[0] + (xf * yf) / w); */
+    p = (&img->dados[0] + x0 + (linesize * y0));
+
+    for (int i = y0; i < yp; i++)
     {
         for (int j = x0; j < xp; j++)
             *(p + j) = 255;
 
-        p = (&img->dados[0] + xf * i);
+        p = p + linesize;
     }
+
+    /* for (int i = x0; i < yp; i++) */
+    /* { */
+    /*     p = p + (linesize * i); */
+    /*     for (int j = x0; j < xp; j++) */
+    /*         *(p + j) = 255;
+
+    /*     /* p = (&img->dados[0] + x0 + (linesize * y0) * i); */
+    /* } */
 }
 
 /* Função principal do programa */
