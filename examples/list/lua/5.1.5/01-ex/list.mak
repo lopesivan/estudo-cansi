@@ -19,10 +19,11 @@ MAKNAM = list.mak
 # *                                                                          *
 # ****************************************************************************
 
-LUA_ROOT        = $(shell brew --prefix)
-LUA_EXEC_PREFIX = $(LUA_ROOT)/opt/lua
-LUA_LIBDIR      = $(LUA_EXEC_PREFIX)/lib
-LUA_INCLUDEDIR  = $(LUA_EXEC_PREFIX)/include/lua
+LUA_VERSION     = $(shell luaenv version-name)
+LUA_ROOT        = $(shell luaenv root)
+LUA_PREFIX      = $(LUA_ROOT)/versions/$(LUA_VERSION)
+LUA_LIBDIR      = $(LUA_PREFIX)/lib
+LUA_INCLUDEDIR  = $(LUA_PREFIX)/include
 
 # ****************************************************************************
 # *                                                                          *
