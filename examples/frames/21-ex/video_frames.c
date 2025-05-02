@@ -106,7 +106,7 @@ void draw_rectangle(ImagemRGB *img, int _x0, int _y0, int _x1, int _y1)
     for (int i = y0; i < yp; i++)
     {
         for (int j = x0; j < xp; j++)
-            *(p + j) = 100 + (*(p + j));
+            *(p + j) = (*(p + j)) - 25;
 
         p = p + linesize;
     }
@@ -272,7 +272,7 @@ int main(int argc, char *argv[])
         /* y0 = 30  */
         /* x1 = 328 */
         /* y1 = 50  */
-        draw_rectangle(img, 250, 30, 428, 750);
+        draw_rectangle(img, 0, 0, 12, 80);
         salvar_imagem_em_arquivo(img); /* Salva imagem .ppm */
         free(img->dados);              /* Libera dados RGB */
 
