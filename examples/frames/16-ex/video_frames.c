@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define NUMBER_OF_FRAMES 5
+#define NUMBER_OF_FRAMES 1
 
 /* Estrutura que representa uma imagem RGB mantida em memória */
 typedef struct
@@ -63,8 +63,36 @@ void salvar_imagem_em_arquivo(const ImagemRGB *img)
 void alteracao_cor(ImagemRGB *img)
 {
     printf("pintando pixel da imagem_%03d.ppm\n", img->id);
-    int total_pixels = img->largura * img->altura;
-    for (int i = 0; i < total_pixels * 3; i++)
+    /*
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %
+     %           0           478                     x
+     %      +    +-----------+- - - - - ------------>
+     %      |    |...........|
+     %      |    |...........|   (478x3) x 200
+     %  200 +    |...........|   ^^^^^^^   ^^^
+     %      |    |           |   |         |- linhas
+     %      |    |           |   |
+     %      |    |           |    \- pixel por linha
+     %      |    |           |
+     %  850 +    +-----------+ - - - - ------------->
+     %      |
+     %      |
+     %      |
+     %      v
+     %    y
+     %
+     %     Total de pixels = (w*3)*h
+     %
+     %
+     %                                         int largura = pCodecCtx->width;
+     %                                         int altura = pCodecCtx->height;
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     */
+    int y = 200;
+    int size_row = img->largura * 3;
+    int total_pixels = size_row * y;
+    for (int i = 0; i < total_pixels; i++)
     {
         img->dados[i] = 255;
     }
