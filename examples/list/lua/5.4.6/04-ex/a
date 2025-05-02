@@ -1,0 +1,15 @@
+// Imprime todos os elementos da lista
+static int l_list_print_all(lua_State *L) {
+    List *list = (List *)luaL_checkudata(L, 1, "ListMeta");
+    ListElmt *element = list_head(list);
+    int index = 1;
+
+    while (element != NULL) {
+        const char *str = (const char *)list_data(element);
+        printf("[%d] %s\n", index, str ? str : "(null)");
+        element = list_next(element);
+        index++;
+    }
+
+    return 0; // não retorna nada para Lua
+}
