@@ -157,16 +157,25 @@ int main(int argc, char *argv[])
 
     int largura = pCodecCtx->width;
     int altura = pCodecCtx->height;
+    // FIX: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    // arredonda largura para múltiplo de 16
+    int largura_alinhada = (largura + 15) & ~15;
+
     int numBytes =
-        av_image_get_buffer_size(AV_PIX_FMT_RGB24, largura, altura, 1);
-    uint8_t *buffer =
-        (uint8_t *)av_malloc(numBytes); /* Aloca buffer para imagem RGB */
+        av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, largura_alinhada,
+                       altura, AV_PIX_FMT_RGB24, 1);
+
+    /* int numBytes = av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, */
+    /* largura, altura, AV_PIX_FMT_RGB24, 1); */
+
+    if (numBytes < 0)
+    {
+        fprintf(stderr, "Erro ao alocar imagem RGB\n");
+        exit(1);
+    }
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     printf("imagem: (%d, %d)\n", largura, altura);
-
-    /* Associa o buffer à estrutura pFrameRGB */
-    av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer,
-                         AV_PIX_FMT_RGB24, largura, altura, 1);
 
     int linesize = pFrameRGB->linesize[0];
     /* Inicializa o contexto de conversão de cores (de YUV para RGB) */
@@ -283,7 +292,8 @@ int main(int argc, char *argv[])
     /* Liberação geral dos recursos */
     list_destroy(&imagens_em_memoria);
     list_destroy(&frame_pool);
-    av_free(buffer);
+    av_freep(
+        &pFrameRGB->data[0]); // 🔥 OBRIGATÓRIO quando se usa av_image_alloc
     av_frame_free(&pFrame);
     av_frame_free(&pFrameRGB);
     avcodec_free_context(&pCodecCtx);

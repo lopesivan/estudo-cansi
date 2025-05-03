@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
 
     printf("imagem: (%d, %d)\n", largura, altura);
 
+    // FIX: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     // arredonda largura para múltiplo de 16
     int largura_alinhada = (largura + 15) & ~15;
 
@@ -154,6 +155,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Erro ao alocar imagem RGB\n");
         exit(1);
     }
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /* Inicializa o contexto de conversão de cores (de YUV para RGB) */
     sws_ctx =
