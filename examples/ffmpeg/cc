@@ -319,3 +319,67 @@ Sempre use linesize para iterar as linhas corretamente.
 
 Quer que eu mostre um desenho visual disso para facilitar ainda mais?
 
+
+
+
+
+Você está quase certo! Vamos esclarecer exatamente os campos principais que o FFmpeg fornece em um AVFrame que representam uma imagem:
+
+
+---
+
+Principais campos relacionados à imagem em AVFrame:
+
+1. width – Largura da imagem (em pixels)
+
+
+2. height – Altura da imagem (em pixels)
+
+
+3. linesize[] – Array com o stride (número de bytes por linha) para cada plano da imagem
+
+
+4. data[] – Ponteiros para os dados da imagem em cada plano (por exemplo, Y, U, V ou RGB)
+
+
+
+
+---
+
+Como eles se relacionam:
+
+Se for uma imagem RGB24, então data[0] é o único plano, e cada pixel usa 3 bytes.
+
+Se for uma imagem YUV420p (formato comum em vídeos), então:
+
+data[0] = plano Y (luminosidade)
+
+data[1] = plano U (crominância azul)
+
+data[2] = plano V (crominância vermelha)
+
+linesize[0], linesize[1], linesize[2] dizem quantos bytes tem cada linha em cada plano.
+
+
+
+
+---
+
+Exemplo com RGB:
+
+for (int y = 0; y < frame->height; y++) {
+    uint8_t *linha = frame->data[0] + y * frame->linesize[0];
+    for (int x = 0; x < frame->width; x++) {
+        uint8_t r = linha[x * 3 + 0];
+        uint8_t g = linha[x * 3 + 1];
+        uint8_t b = linha[x * 3 + 2];
+    }
+}
+
+
+---
+
+Se quiser, posso gerar um diagrama visual explicando data, linesize, width e height. Quer isso?
+
+
+
