@@ -60,56 +60,32 @@ void salvar_imagem_em_arquivo(const ImagemRGB *img)
 }
 
 /* desenha um retangulo na imagem: */
-void draw_rectangle(ImagemRGB *img, int _x0, int _y0, int _x1, int _y1)
+void draw_rectangle(ImagemRGB *img)
 {
     printf("pintando pixel da imagem_%03d.ppm\n", img->id);
+
+    int x0 = 250;
+    int y0 = 30;
+    int x1 = 328;
+    int y1 = 150;
 
     int w = img->largura;
     int h = img->altura;
     int linesize = w * 3;
 
-    // Validação e ajuste de coordenadas
-    int x0 = (_x0 < 0) ? 0 : (_x0 > w ? w : _x0);
-    int x1 = (_x1 < 0) ? 0 : (_x1 > w ? w : _x1);
-    int y0 = (_y0 < 0) ? 0 : (_y0 > h ? h : _y0);
-    int y1 = (_y1 < 0) ? 0 : (_y1 > h ? h : _y1);
+    uint8_t **matrix = NULL;
+    matrix = (uint8_t **)malloc((size_t)((h) * sizeof(uint8_t *)));
 
-    if (x0 > x1)
-    {
-        int tmp = x0;
-        x0 = x1;
-        x1 = tmp;
-    }
-    if (y0 > y1)
-    {
-        int tmp = y0;
-        y0 = y1;
-        y1 = tmp;
-    }
+    matrix[0] = &img->dados[0];
 
-    int xf = linesize - x0;
-    int yf = h;
+    for (int i = 1; i < h; i++)
+        matrix[i] = matrix[i - 1] + linesize;
 
-    int xp = linesize + x1 - (x0 + w); /* --> linesize - x0 - (w - x1); */
-    int yp = y1;
+    for (int i = y0; i < h; i++)
+        for (int j = x0; j < linesize / 2; j++)
+            matrix[i][j] = 255;
 
-    int total_pixels = linesize * yf;
-
-    printf("w = %d\n", w);
-    printf("h = %d\n", h);
-    printf("linesize = %d\n", linesize);
-    printf("(xp, yp) = (%d, %d)\n", xp, yp);
-    uint8_t *p = NULL;
-
-    p = (&img->dados[0] + x0 + (linesize * y0));
-
-    for (int i = y0; i < yp; i++)
-    {
-        for (int j = x0; j < xp; j++)
-            *(p + j) = (*(p + j)) - 25;
-
-        p = p + linesize;
-    }
+    free(matrix);
 }
 
 /* Função principal do programa */
@@ -272,7 +248,7 @@ int main(int argc, char *argv[])
         /* y0 = 30  */
         /* x1 = 328 */
         /* y1 = 50  */
-        draw_rectangle(img, 0, 0, 12, 80);
+        draw_rectangle(img);
         salvar_imagem_em_arquivo(img); /* Salva imagem .ppm */
         free(img->dados);              /* Libera dados RGB */
 
