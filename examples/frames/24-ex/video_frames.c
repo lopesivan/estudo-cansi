@@ -157,16 +157,14 @@ int main(int argc, char *argv[])
 
     int largura = pCodecCtx->width;
     int altura = pCodecCtx->height;
-    // FIX: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    // FIX: (code: 002) ======================================================
     // arredonda largura para múltiplo de 16
     int largura_alinhada = (largura + 15) & ~15;
 
     int numBytes =
         av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, largura_alinhada,
                        altura, AV_PIX_FMT_RGB24, 1);
-
-    /* int numBytes = av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, */
-    /* largura, altura, AV_PIX_FMT_RGB24, 1); */
 
     if (numBytes < 0)
     {
@@ -175,9 +173,9 @@ int main(int argc, char *argv[])
     }
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    int linesize = pFrameRGB->linesize[0];
     printf("imagem: (%d, %d)\n", largura, altura);
 
-    int linesize = pFrameRGB->linesize[0];
     /* Inicializa o contexto de conversão de cores (de YUV para RGB) */
     sws_ctx =
         sws_getContext(largura, altura, pCodecCtx->pix_fmt, largura, altura,
@@ -292,8 +290,12 @@ int main(int argc, char *argv[])
     /* Liberação geral dos recursos */
     list_destroy(&imagens_em_memoria);
     list_destroy(&frame_pool);
-    av_freep(
-        &pFrameRGB->data[0]); // 🔥 OBRIGATÓRIO quando se usa av_image_alloc
+
+    // FIX: (code: 002) ======================================================
+    // 🔥 OBRIGATÓRIO quando se usa av_image_alloc
+    av_freep(&pFrameRGB->data[0]);
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     av_frame_free(&pFrame);
     av_frame_free(&pFrameRGB);
     avcodec_free_context(&pCodecCtx);
