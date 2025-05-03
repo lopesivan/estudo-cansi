@@ -1,0 +1,82 @@
+
+Perfeito. Vamos usar a estrutura ImagemRGB que você forneceu para aplicar outro algoritmo de detecção de bordas, desta vez usando um filtro Laplaciano, que é um operador que detecta regiões onde a intensidade muda rapidamente (bordas) usando uma única máscara.
+
+1. Conversão para escala de cinza
+
+2. Aplicação do kernel Laplaciano
+
+
+---
+
+Código C com filtro Laplaciano:
+
+#include <stdlib.h>
+#include <stdint.h>
+
+typedef struct
+{
+    int id;
+    int largura;
+    int altura;
+    uint8_t *dados; // RGB intercalado
+} ImagemRGB;
+
+void converter_para_cinza(const ImagemRGB *imagem, uint8_t *cinza)
+{
+    for (int y = 0; y < imagem->altura; y++) {
+        for (int x = 0; x < imagem->largura; x++) {
+            int idx_rgb = (y * imagem->largura + x) * 3;
+            uint8_t r = imagem->dados[idx_rgb];
+            uint8_t g = imagem->dados[idx_rgb + 1];
+            uint8_t b = imagem->dados[idx_rgb + 2];
+            cinza[y * imagem->largura + x] = (uint8_t)(0.299 * r + 0.587 * g + 0.114 * b);
+        }
+    }
+}
+
+void filtro_laplaciano(const uint8_t *cinza, int largura, int altura, uint8_t *bordas)
+{
+    int kernel[3][3] = {
+        { 0, -1,  0},
+        {-1,  4, -1},
+        { 0, -1,  0}
+    };
+
+    for (int y = 1; y < altura - 1; y++) {
+        for (int x = 1; x < largura - 1; x++) {
+            int soma = 0;
+
+            for (int ky = -1; ky <= 1; ky++) {
+                for (int kx = -1; kx <= 1; kx++) {
+                    int pixel = cinza[(y + ky) * largura + (x + kx)];
+                    soma += pixel * kernel[ky + 1][kx + 1];
+                }
+            }
+
+            if (soma < 0) soma = 0;
+            if (soma > 255) soma = 255;
+
+            bordas[y * largura + x] = (uint8_t)soma;
+        }
+    }
+}
+
+
+---
+
+Como usar:
+
+ImagemRGB imagem;
+// suponha que imagem.largura, imagem.altura e imagem.dados estejam preenchidos
+int total = imagem.largura * imagem.altura;
+
+uint8_t *cinza = malloc(total);
+uint8_t *bordas = malloc(total);
+
+converter_para_cinza(&imagem, cinza);
+filtro_laplaciano(cinza, imagem.largura, imagem.altura, bordas);
+
+// agora 'bordas' contém a imagem em tons de cinza com as bordas realçadas
+
+Esse algoritmo é mais simples e rápido que Sobel, embora menos sensível à direção das bordas. Deseja um exemplo com suavização antes da detecção de bordas?
+
