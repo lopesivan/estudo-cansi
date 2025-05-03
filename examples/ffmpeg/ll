@@ -1,0 +1,115 @@
+
+Ótimo! Aqui está um passo a passo completo para compilar e executar o exemplo C++ + Lua usando SWIG.
+
+
+---
+
+1. Estrutura de arquivos
+
+Crie uma pasta e coloque os seguintes arquivos:
+
+my.i – Arquivo de interface SWIG
+
+%module my
+%{
+#include "value.h"
+%}
+
+%include "value.h"
+
+value.h – Header C++ da classe
+
+#ifndef VALUE_H
+#define VALUE_H
+
+class Value {
+public:
+    Value(float f);
+    Value operator*(float f) const;
+    Value operator-(float f) const;
+    bool operator==(Value const &rhs) const;
+private:
+    float f;
+};
+
+#endif
+
+value.cpp – Implementação da classe
+
+#include "value.h"
+
+Value::Value(float f) : f(f) {}
+
+Value Value::operator*(float f) const {
+    return Value(this->f * f);
+}
+
+Value Value::operator-(float f) const {
+    return Value(this->f - f);
+}
+
+bool Value::operator==(const Value &rhs) const {
+    return this->f == rhs.f;
+}
+
+
+---
+
+2. Gerar o wrapper com SWIG
+
+Abra o terminal e execute:
+
+swig -c++ -lua my.i
+
+Isso vai gerar:
+
+my_wrap.cxx (código C++ que conecta Lua à sua classe)
+
+
+
+---
+
+3. Compilar o módulo compartilhado
+
+Agora compile tudo com g++. Você precisará das headers do Lua. Por exemplo, para Lua 5.4 no Linux:
+
+g++ -fPIC -shared value.cpp my_wrap.cxx -o my.so -I/usr/include/lua5.4 -llua5.4
+
+No macOS pode ser -I/usr/local/include e -llua, e no Windows pode precisar de ajustes com MinGW ou MSVC.
+
+
+---
+
+4. Criar o script Lua
+
+Crie test.lua:
+
+local my = require("my")
+
+local value = my.Value(3)
+value = value * 2 - 1
+
+if value == my.Value(5) then
+    print("succeed")
+else
+    print("failed")
+end
+
+
+---
+
+5. Rodar o script
+
+Execute:
+
+lua5.4 test.lua
+
+Saída esperada:
+
+succeed
+
+
+---
+
+Se quiser, posso te mandar uma versão adaptada para Windows, ou até gerar um CMakeLists.txt para facilitar a build. Deseja isso?
+
