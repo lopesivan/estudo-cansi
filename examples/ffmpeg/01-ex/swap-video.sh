@@ -3,11 +3,11 @@
 uppdir=../../..
 
 # Nome do link simbólico fixo
-SYMLINK="font.ttf"
+SYMLINK="arquivo.mp4"
 
 # Arquivos para alternar
-FILE1=${uppdir}/assets/fonts/SauceCodeProNerdFontMono-Regular.ttf
-FILE2=${uppdir}/assets/fonts/DejaVuSans.ttf
+FILE1=${uppdir}/assets/drink.mp4
+FILE2=${uppdir}/assets/arquivo.mp4
 
 # Verifica se os arquivos existem
 for file in "$FILE1" "$FILE2"; do

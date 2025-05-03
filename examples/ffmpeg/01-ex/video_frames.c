@@ -68,6 +68,8 @@ void draw_rectangle(ImagemRGB *img)
     int h = img->altura;
     int linesize = w * 3;
 
+    int kapa = 40;
+
     // Aloca matriz de linhas
     uint8_t **matrix = malloc(h * sizeof(uint8_t *));
     if (!matrix)
@@ -77,7 +79,7 @@ void draw_rectangle(ImagemRGB *img)
     for (int i = 1; i < h; i++)
         matrix[i] = matrix[i - 1] + linesize;
 
-    for (int i = 0; i < h / 2; i++)
+    for (int i = 0; i < h / 2 - kapa; i++)
         for (int j = 0; j < linesize; j = j + 3)
         {
             matrix[i][j + 0] = matrix[i][j + 0] / 2 - 0;  // R
@@ -85,7 +87,7 @@ void draw_rectangle(ImagemRGB *img)
             matrix[i][j + 2] = matrix[i][j + 2] / 2 - 0;  // B
         }
 
-    for (int i = h / 2; i < h; i++)
+    for (int i = h / 2 + kapa; i < h; i++)
         for (int j = 0; j < linesize; j = j + 3)
         {
             matrix[i][j + 0] = matrix[i][j + 0] / 2 - 55; // R
