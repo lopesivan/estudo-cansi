@@ -1,0 +1,128 @@
+Sim! Existem alguns headers prontos e simples no GitHub que podem te ajudar a salvar imagens como PNG em C/C++, sem precisar lidar com toda a complexidade do FFmpeg. Aqui vão duas opções populares:
+
+
+---
+
+1. stb_image_write.h (de Sean Barrett)
+
+Extremamente fácil de usar.
+
+Arquivo único (.h) — basta incluir no seu projeto.
+
+Escreve PNG, BMP, TGA e JPG.
+
+
+Como usar com RGB (como um frame PPM):
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
+// Suponha que você tenha um buffer RGB de tamanho width * height * 3
+stbi_write_png("frame.png", width, height, 3, rgb_buffer, width * 3);
+
+
+---
+
+2. lodepng
+
+Específico para PNG.
+
+Mais controle sobre compressão, chunks, etc.
+
+Usa apenas C (sem dependências).
+
+
+Uso básico:
+
+#include "lodepng.h"
+
+// Suponha que você tenha um buffer RGB
+lodepng_encode24_file("frame.png", rgb_buffer, width, height);
+
+
+---
+
+Qual escolher?
+
+Quer simplicidade e rapidez? Use stb_image_write.h.
+
+Quer controle mais fino sobre PNG? Use lodepng.
+
+
+Se quiser, posso te mandar um exemplo completo com stb_image_write.h. Deseja isso?
+
+
+
+
+Ótimo! Se você está salvando frames como PPM via C usando o FFmpeg, pode salvá-los como PNG diretamente, com algumas mudanças no seu código. Aqui está o caminho geral:
+
+
+---
+
+1. Troque o formato de saída no seu código C
+
+Você provavelmente está usando o AVCodec e salvando um AVFrame em PPM com algo como:
+
+// Salvando como PPM
+fprintf(f, "P6\n%d %d\n255\n", width, height);
+fwrite(frame->data[0], 1, width * height * 3, f);
+
+Em vez disso, para PNG, você precisa encodar a imagem com o codec PNG da libavcodec.
+
+
+---
+
+2. Use o encoder PNG da FFmpeg (libavcodec)
+
+Aqui está um resumo dos passos:
+
+1. Inicialize o encoder PNG (AVCodec *codec = avcodec_find_encoder(AV_CODEC_ID_PNG);)
+
+
+2. Configure o AVCodecContext com os parâmetros certos (largura, altura, pixel format).
+
+
+3. Envie o AVFrame para o encoder usando avcodec_send_frame.
+
+
+4. Receba o AVPacket codificado com avcodec_receive_packet.
+
+
+5. Escreva o conteúdo do AVPacket em um arquivo .png.
+
+
+
+
+---
+
+Exemplo Simplificado:
+
+AVCodec *codec = avcodec_find_encoder(AV_CODEC_ID_PNG);
+AVCodecContext *codec_ctx = avcodec_alloc_context3(codec);
+codec_ctx->bit_rate = 400000;
+codec_ctx->width = frame->width;
+codec_ctx->height = frame->height;
+codec_ctx->pix_fmt = AV_PIX_FMT_RGB24;
+codec_ctx->time_base = (AVRational){1, 25};
+
+avcodec_open2(codec_ctx, codec, NULL);
+
+AVPacket *pkt = av_packet_alloc();
+avcodec_send_frame(codec_ctx, frame);
+avcodec_receive_packet(codec_ctx, pkt);
+
+// Salve como .png
+FILE *png_file = fopen("frame.png", "wb");
+fwrite(pkt->data, 1, pkt->size, png_file);
+fclose(png_file);
+
+av_packet_free(&pkt);
+avcodec_free_context(&codec_ctx);
+
+
+---
+
+Se seu AVFrame não estiver em AV_PIX_FMT_RGB24, você precisará converter com o sws_scale.
+
+Deseja um exemplo mais completo com esse código funcionando?
+
