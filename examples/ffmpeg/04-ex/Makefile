@@ -14,6 +14,9 @@ MAKE_CMD = ALGOWC_TOPDIR=$(GIT_ROOT) $(MAKE) -f $(MAKEFILE)
 all:
 	$(MAKE_CMD)
 
+bear:
+	$@ -- $(MAKE) -f $(MAKEFILE)
+
 # Target para rodar programa
 run:
 	$(MAKE_CMD) $@
