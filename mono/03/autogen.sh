@@ -1,8 +1,7 @@
 #!/bin/sh
 
-autoreconf -i -v && 
-    ./configure && 
-    make &&
-    make -C src/ run
+aclocal
+automake --add-missing
+autoconf
 
 exit 0
