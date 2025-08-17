@@ -38,7 +38,7 @@ AM_CONDITIONAL(CONFIG_MONO, [
 
 # Criando comando
 AC_CONFIG_COMMANDS([Test],
-                   [echo "=========$mypkgname======="; 
+                   [echo "========= $mypkgname =========";
 				   echo make -Csrc run ],
                    [mypkgname=$PACKAGE_NAME])
 
