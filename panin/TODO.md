@@ -1,0 +1,3 @@
+- [x] Sounds in rendered videos
+- [x] Scale delta_time in preview
+- [ ] Plugin state snapshots
