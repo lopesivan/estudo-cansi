@@ -1,4 +1,7 @@
-Esse texto do Sean Barrett descreve uma técnica extremamente simples, mas muito elegante, usada em computação gráfica e geometria computacional para percorrer as arestas de um polígono sem precisar usar:
+Esse texto do Sean Barrett descreve uma técnica extremamente
+simples, mas muito elegante, usada em computação gráfica
+e geometria computacional para percorrer as arestas de um
+polígono sem precisar usar:
 
 * `%` (módulo/divisão),
 * `if`,
